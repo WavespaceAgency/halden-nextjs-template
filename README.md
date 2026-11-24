@@ -8,7 +8,7 @@ A free, open-source Next.js template for healthcare, health-tech and AI SaaS web
 
 ## Demo
 
-https://halden-nextjs-template.vercel.app
+https://halden-nextjs-template-phi.vercel.app
 
 ## How to Use
 
@@ -16,7 +16,7 @@ https://halden-nextjs-template.vercel.app
 
 Deploy the template to Vercel. No environment variables or setup are needed.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWavespaceAgency%2Fhalden-nextjs-template&project-name=halden&repository-name=halden&demo-title=Halden%20%E2%80%93%20AI%20Healthcare%20SaaS%20Template&demo-description=A%20free%20Next.js%20template%20for%20healthcare%20and%20AI%20SaaS%20startups%3A%2011%20pages%2C%20MDX%20blog%2C%20smooth%20animations%20and%20full%20SEO.&demo-url=https%3A%2F%2Fhalden-nextjs-template.vercel.app&demo-image=https%3A%2F%2Fraw.githubusercontent.com%2FWavespaceAgency%2Fhalden-nextjs-template%2Fmain%2F.github%2Fpreview.png)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWavespaceAgency%2Fhalden-nextjs-template&project-name=halden&repository-name=halden&demo-title=Halden%20%E2%80%93%20AI%20Healthcare%20SaaS%20Template&demo-description=A%20free%20Next.js%20template%20for%20healthcare%20and%20AI%20SaaS%20startups%3A%2011%20pages%2C%20MDX%20blog%2C%20smooth%20animations%20and%20full%20SEO.&demo-url=https%3A%2F%2Fhalden-nextjs-template-phi.vercel.app&demo-image=https%3A%2F%2Fraw.githubusercontent.com%2FWavespaceAgency%2Fhalden-nextjs-template%2Fmain%2F.github%2Fpreview.png)
 
 ### Clone and Deploy
 
