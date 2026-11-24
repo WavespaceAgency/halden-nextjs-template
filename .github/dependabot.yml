@@ -1,0 +1,18 @@
+# Keeps dependencies up to date with weekly pull requests (grouped to keep the noise low).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      next-react:
+        patterns: ["next", "@next/*", "eslint-config-next", "react", "react-dom", "@types/react", "@types/react-dom"]
+      tailwind:
+        patterns: ["tailwindcss", "@tailwindcss/*"]
+      mdx:
+        patterns: ["@mdx-js/*", "remark-*", "rehype-*", "@types/mdx"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

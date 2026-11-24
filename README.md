@@ -1,17 +1,8 @@
----
-name: Halden – AI Healthcare SaaS Template
-slug: halden-ai-healthcare-saas
-description: A free Next.js marketing site template for healthcare and AI SaaS startups, with 11 pages, an MDX blog, pricing, security and legal pages, smooth animations and full SEO.
-framework: Next.js
-useCase: Marketing Sites
-css: Tailwind
-deployUrl: https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWavespaceAgency%2Fhalden-nextjs-template&project-name=halden&repository-name=halden
-demoUrl: https://halden-nextjs-template.vercel.app
----
-
 # Halden – AI Healthcare SaaS Template
 
 A free, open-source Next.js template for healthcare, health-tech and AI SaaS websites. It has a calm, modern design with a dark hero, product mockups built in HTML, smooth scroll animations, an MDX blog and legal pages. It is fast and accessible, and you can rebrand it from a few config files.
+
+**Built with:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · MDX · next/font · next/image
 
 ![Halden – Next.js template for healthcare and AI SaaS](.github/preview.png)
 
@@ -25,7 +16,7 @@ https://halden-nextjs-template.vercel.app
 
 Deploy the template to Vercel. No environment variables or setup are needed.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWavespaceAgency%2Fhalden-nextjs-template&project-name=halden&repository-name=halden)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWavespaceAgency%2Fhalden-nextjs-template&project-name=halden&repository-name=halden&demo-title=Halden%20%E2%80%93%20AI%20Healthcare%20SaaS%20Template&demo-description=A%20free%20Next.js%20template%20for%20healthcare%20and%20AI%20SaaS%20startups%3A%2011%20pages%2C%20MDX%20blog%2C%20smooth%20animations%20and%20full%20SEO.&demo-url=https%3A%2F%2Fhalden-nextjs-template.vercel.app&demo-image=https%3A%2F%2Fraw.githubusercontent.com%2FWavespaceAgency%2Fhalden-nextjs-template%2Fmain%2F.github%2Fpreview.png)
 
 ### Clone and Deploy
 
@@ -150,6 +141,10 @@ public/images/blog/       blog covers and author photos
 - Fonts: [Geist and Geist Mono](https://vercel.com/font) (SIL Open Font License 1.1) via `next/font`
 - Photos: AI-generated for this template and free to use with it
 - All names, quotes, numbers and clinic names are fictional demo content
+
+## Contributing
+
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
