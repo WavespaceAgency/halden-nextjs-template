@@ -1,0 +1,6 @@
+/* Pause every CSS loop inside the zone while it is off screen or the tab is hidden.
+   !important: the loops set the `animation` shorthand, which would otherwise reset the play state. */
+.zone[data-paused],
+.zone[data-paused] * {
+  animation-play-state: paused !important;
+}

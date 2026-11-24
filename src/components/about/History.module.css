@@ -1,0 +1,130 @@
+.history {
+  background:
+    linear-gradient(180deg, #fff, rgb(255 255 255 / 0.85) 35%, rgb(255 255 255 / 0) 70%),
+    radial-gradient(70% 75% at 0% 105%, #eba451, rgb(243 199 146 / 0.75) 40%, rgb(249 231 203 / 0)),
+    radial-gradient(75% 80% at 100% 100%, #dceb96, rgb(234 243 188 / 0.7) 45%, rgb(244 248 223 / 0)),
+    #fdfcf7;
+}
+.glow {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+/* Carousel – the state lives in data attributes and CSS variables set by HistoryCarousel. */
+.carousel {
+  --cw: min(340px, calc(100vw - 50px));
+  /* Framer's step: slow start, quick middle, soft landing (~0.8s). After a drag: ease-out. */
+  --ease: cubic-bezier(0.55, 0, 0.2, 1);
+  --dur: 0.8s;
+}
+.carousel[data-release] {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.6s;
+}
+.carousel[data-dragging] {
+  --dur: 0s;
+}
+
+.stage {
+  touch-action: pan-y;
+}
+:global(html.js) .stage {
+  cursor: grab;
+}
+.carousel[data-dragging] .stage {
+  cursor: grabbing;
+}
+
+/* Dial: ticks every 4°, turns -4° per step and follows a drag. */
+.dial {
+  top: -975px;
+  margin-left: -500px;
+  transform: rotate(calc((var(--i) - var(--start)) * -4deg + var(--dd, 0deg)));
+  transition: transform var(--dur) var(--ease);
+}
+@media (min-width: 1024px) {
+  .dial {
+    top: -1010px;
+  }
+}
+.tick {
+  stroke: #0c1a2f;
+  transform: rotate(var(--a));
+  transition:
+    stroke 0.45s ease,
+    stroke-opacity 0.45s ease,
+    transform 0.6s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+/* The three ticks either side of the centre light up blue and extend. */
+.tick[data-hl] {
+  stroke: #2c67f6;
+}
+.tick[data-hl="1"] {
+  stroke-opacity: 0.9;
+  transform: rotate(var(--a)) translateY(8px);
+}
+.tick[data-hl="2"] {
+  stroke-opacity: 0.7;
+  transform: rotate(var(--a)) translateY(5px);
+}
+.tick[data-hl="3"] {
+  stroke-opacity: 0.5;
+  transform: rotate(var(--a)) translateY(2px);
+}
+
+.spotlight {
+  width: var(--cw);
+  outline: 2px solid rgb(44 103 246 / 0.9);
+  box-shadow: 0 20px 56px -8px rgb(44 103 246 / 0.25);
+}
+
+.track {
+  transform: translateX(calc(-1 * (var(--i) * (var(--cw) + 24px) + var(--cw) / 2) + var(--drag, 0px)));
+  transition: transform var(--dur) var(--ease);
+}
+.card {
+  width: var(--cw);
+  transition:
+    translate 0.45s cubic-bezier(0.34, 1.45, 0.64, 1),
+    box-shadow 0.45s ease;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px -12px rgb(12 26 47 / 0.08);
+}
+.progress {
+  transition: opacity 0.6s ease;
+}
+.card[data-far] .progress {
+  opacity: 0.5;
+}
+.bars {
+  background: repeating-linear-gradient(90deg, #0c1a2f 0 1.5px, transparent 1.5px 6.4px);
+}
+.barsOn {
+  background: repeating-linear-gradient(90deg, #2c67f6 0 1.5px, transparent 1.5px 6.4px);
+}
+
+.navBtn {
+  transition:
+    background-color 0.2s ease,
+    scale 0.2s ease;
+}
+.navBtn:active {
+  scale: 0.94;
+}
+.arrow {
+  transition: translate 0.35s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .carousel:not([data-dragging]) .card:not([aria-current]):hover {
+    translate: 0 -4px;
+    box-shadow: 0 24px 48px -16px rgb(12 26 47 / 0.14);
+  }
+  .navBtn:hover .arrow {
+    translate: var(--nudge) 0;
+  }
+}

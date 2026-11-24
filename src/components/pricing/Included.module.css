@@ -1,0 +1,40 @@
+/*
+ * "Every plan includes" cards (Included.tsx): hover lift with a soft blue shadow, the icon tile tilts.
+ * The opacity/transform transitions keep the data-stagger reveal from globals.css working.
+ */
+.card {
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease,
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tile {
+  display: block;
+  transition:
+    rotate 0.6s cubic-bezier(0.34, 1.45, 0.64, 1),
+    scale 0.6s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    translate: 0 -4px;
+    box-shadow:
+      0 2px 4px 0 rgb(12 40 90 / 0.04),
+      0 20px 44px -10px rgb(44 103 246 / 0.2);
+  }
+  .card:hover .tile {
+    rotate: -6deg;
+    scale: 1.06;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    translate: none;
+  }
+  .card:hover .tile {
+    rotate: none;
+    scale: none;
+  }
+}

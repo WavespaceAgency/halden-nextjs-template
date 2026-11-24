@@ -1,0 +1,12 @@
+/* Hover: the tile lifts with a soft shadow. */
+.tile {
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.45, 0.64, 1),
+    box-shadow 0.45s ease;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 32px -16px rgb(12 26 47 / 0.22);
+  }
+}

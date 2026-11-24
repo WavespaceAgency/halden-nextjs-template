@@ -1,0 +1,43 @@
+/*
+ * Plan cards (Plans.tsx): hover lift – the light card turns white, the dark one glows blue.
+ * The opacity/transform transitions keep the data-stagger reveal from globals.css working.
+ */
+.card {
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease,
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    translate: 0 -4px;
+  }
+  .light:hover {
+    background-color: var(--surface);
+    box-shadow:
+      0 2px 4px 0 rgb(50 25 4 / 0.04),
+      0 22px 48px -10px rgb(50 25 4 / 0.14);
+  }
+  .dark:hover {
+    box-shadow:
+      0 2px 4px 0 rgb(7 26 49 / 0.2),
+      0 24px 56px -12px rgb(44 103 246 / 0.45);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    translate: none;
+  }
+}
+
+/* "Most popular" pill: soft lime → mint → blue glow (Figma badge fills). */
+.badge {
+  background:
+    radial-gradient(60% 120% at 10% 50%, rgb(224 238 160) 0%, rgb(232 243 194 / 0.75) 50%, rgb(240 247 222 / 0) 100%),
+    radial-gradient(60% 140% at 50% 100%, rgb(156 225 222) 0%, rgb(190 234 230 / 0.7) 50%, rgb(221 243 239 / 0) 100%),
+    radial-gradient(50% 120% at 95% 30%, rgb(123 175 249 / 0.8) 0%, rgb(158 197 250 / 0.5) 45%, rgb(200 222 251 / 0) 100%),
+    #ecf7f1;
+}

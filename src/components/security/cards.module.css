@@ -1,0 +1,56 @@
+/*
+ * Hover for the Standards and Compliance cards: the card lifts onto white with a soft shadow,
+ * the shield badge gives a small nod and the number bubble fills with ink.
+ * The opacity/transform transitions keep the data-stagger reveal (globals.css) working.
+ */
+.card {
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease,
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.badge {
+  transition:
+    rotate 0.6s cubic-bezier(0.34, 1.45, 0.64, 1),
+    scale 0.6s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+
+.number {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    scale 0.6s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    translate: 0 -4px;
+    background-color: var(--surface);
+    box-shadow:
+      0 2px 4px 0 rgb(50 25 4 / 0.04),
+      0 18px 40px -8px rgb(50 25 4 / 0.12);
+  }
+  .card:hover .badge {
+    scale: 1.08;
+    rotate: -6deg;
+  }
+  .card:hover .number {
+    background-color: var(--ink);
+    color: var(--sky);
+    scale: 1.08;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    translate: none;
+  }
+  .card:hover .badge,
+  .card:hover .number {
+    scale: none;
+    rotate: none;
+  }
+}

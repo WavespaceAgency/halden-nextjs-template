@@ -1,0 +1,146 @@
+/*
+ * Hero flow diagram (see HeroFlow.tsx).
+ * The appear sequence copies the Framer timings. It is pure CSS and starts on first paint,
+ * so nothing above the fold waits for JavaScript. Each piece sets --d (delay) and --from (start transform).
+ */
+.node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 17px;
+  color: #fff;
+}
+.node,
+.glass {
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.28);
+  box-shadow: 0 8px 24px 0 rgb(0 0 0 / 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.active {
+  background: rgb(110 221 197 / 0.18);
+  border-color: #6eddc5;
+  box-shadow: 0 0 20px 0 rgb(110 221 197 / 0.5);
+  backdrop-filter: none;
+}
+/* Small chips in the phone version. */
+.chip {
+  gap: 6px;
+  padding-inline: 10px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* Light pulses travelling along the connectors (animated by FlowSignals.tsx). */
+.pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  offset-rotate: 0deg;
+  offset-anchor: center;
+  background: radial-gradient(circle, #fff 0 30%, var(--c) 65%);
+  box-shadow:
+    0 0 6px 1px var(--c),
+    0 0 16px 4px color-mix(in srgb, var(--c) 45%, transparent);
+}
+
+/* Arrival flash on a node when a pulse reaches it. */
+.flash {
+  position: absolute;
+  inset: var(--inset, 0);
+  border-radius: 10px;
+  border: 1px solid var(--c);
+  box-shadow:
+    0 0 18px 0 color-mix(in srgb, var(--c) 55%, transparent),
+    inset 0 0 12px 0 color-mix(in srgb, var(--c) 25%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Appear: opacity and transform have their own duration and easing (Framer springs, bounce 0.12–0.25). */
+  .in {
+    animation:
+      home-flow-fade 0.32s ease-out var(--d, 0s) both,
+      home-flow-move 0.7s cubic-bezier(0.25, 1.12, 0.5, 1) var(--d, 0s) both;
+  }
+  .in[data-kind="pop"] {
+    animation-timing-function: ease-out, cubic-bezier(0.3, 1.35, 0.5, 1);
+  }
+  .in[data-kind="card"] {
+    animation-duration: 0.6s, 0.8s;
+    animation-timing-function: ease-out, cubic-bezier(0.3, 1.25, 0.5, 1);
+  }
+  .in[data-kind="fade"] {
+    animation-duration: 0.9s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .in[data-kind="tween"] {
+    animation-duration: 0.6s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Loops once the diagram is in: the triage step breathes, the LIVE label blinks. */
+  .active {
+    animation: home-flow-breathe 1.8s cubic-bezier(0.45, 0, 0.55, 1) 1.4s infinite alternate;
+  }
+  .live {
+    animation: home-flow-blink 1.1s cubic-bezier(0.45, 0, 0.55, 1) 2s infinite alternate;
+  }
+}
+
+/* Hover: nodes and the call card lift and glow. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .node,
+  .glass {
+    transition:
+      translate 0.45s cubic-bezier(0.34, 1.45, 0.64, 1),
+      background-color 0.3s ease-out,
+      border-color 0.3s ease-out,
+      box-shadow 0.3s ease-out;
+  }
+  .node:hover,
+  .glass:hover {
+    translate: 0 -3px;
+    background-color: rgb(255 255 255 / 0.16);
+    border-color: rgb(255 255 255 / 0.55);
+    box-shadow:
+      0 14px 30px 0 rgb(0 0 0 / 0.28),
+      0 0 22px 0 rgb(100 160 248 / 0.4);
+  }
+  .active:hover {
+    background-color: rgb(110 221 197 / 0.26);
+    border-color: #8ff0db;
+    box-shadow: 0 0 30px 2px rgb(110 221 197 / 0.6);
+  }
+}
+
+@keyframes home-flow-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes home-flow-move {
+  from {
+    transform: var(--from, none);
+  }
+}
+@keyframes home-flow-breathe {
+  to {
+    transform: scale(1.035);
+  }
+}
+@keyframes home-flow-blink {
+  to {
+    opacity: 0.45;
+  }
+}

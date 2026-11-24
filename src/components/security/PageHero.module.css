@@ -1,0 +1,38 @@
+/* Photo hero of the Security and Pricing pages (see PageHero.tsx). */
+
+.overlay {
+  background: linear-gradient(180deg, rgb(9 20 20 / 0.62) 0%, rgb(19 44 52 / 0.35) 55%, rgb(38 75 81 / 0.38) 100%);
+}
+
+/* Soft light that follows the pointer (position set by HeroPointer.tsx). */
+.spot {
+  opacity: 0;
+  background: radial-gradient(
+    560px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(140 200 230 / 0.14),
+    rgb(110 221 197 / 0.04) 45%,
+    transparent 70%
+  );
+  transition: opacity 0.8s ease-out;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The photo settles in slowly on load, then drifts a few px with the pointer (desktop). */
+  .photo {
+    animation: settle 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    translate: calc(var(--px, 0) * -16px) calc(var(--py, 0) * -10px);
+    transition: scale 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  [data-pointer] .photo {
+    scale: 1.05;
+  }
+  [data-pointer] .spot {
+    opacity: 1;
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.08);
+  }
+}

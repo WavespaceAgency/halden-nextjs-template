@@ -1,0 +1,61 @@
+/*
+ * Hover (pointer devices) and keyboard focus: the card lifts 4px, the cover gets a soft
+ * shadow and zooms to 1.03 inside its rounded frame, the title turns brand blue.
+ */
+.card {
+  transition: translate 0.5s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+.cover {
+  transition: box-shadow 0.45s ease;
+  /* keeps the rounded corners clipping the zoomed image in Safari */
+  isolation: isolate;
+}
+.image {
+  transition:
+    scale 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease;
+}
+.title {
+  transition: color 0.25s ease;
+}
+@media (hover: hover) {
+  .card:hover {
+    translate: 0 -4px;
+  }
+  .card:hover .cover {
+    box-shadow: 0 18px 40px -12px rgb(12 26 47 / 0.22);
+  }
+  .card:hover .image {
+    scale: 1.03;
+  }
+  .card:hover .title {
+    color: var(--brand);
+  }
+}
+.card:has(.link:focus-visible) {
+  translate: 0 -4px;
+}
+.card:has(.link:focus-visible) .cover {
+  box-shadow:
+    0 0 0 2px var(--canvas),
+    0 0 0 4px var(--brand);
+}
+.card:has(.link:focus-visible) .image {
+  scale: 1.03;
+}
+.card:has(.link:focus-visible) .title {
+  color: var(--brand);
+}
+.card:active .image {
+  scale: 1.015;
+}
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .image {
+    transition: none;
+  }
+  .card:hover,
+  .card:has(.link:focus-visible) {
+    translate: none;
+  }
+}

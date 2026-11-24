@@ -1,0 +1,8 @@
+/* Pointer parallax of the hero photo (variables set by ParallaxCard). */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card .photo {
+    transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0) scale(var(--pz, 1));
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+}

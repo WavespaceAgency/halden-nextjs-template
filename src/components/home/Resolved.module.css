@@ -1,0 +1,91 @@
+/* "98% resolved" collage (see Resolved.tsx and ResolvedStage.tsx). */
+.comp {
+  padding-block: 80px;
+}
+.refill {
+  background:
+    radial-gradient(42% 42% at 50% 48%, rgb(255 255 255 / 0.7), rgb(255 255 255 / 0.35) 60%, rgb(255 255 255 / 0)),
+    radial-gradient(45% 75% at 0% 100%, #7baff9, rgb(158 197 250 / 0.7) 45%, rgb(200 222 251 / 0)),
+    radial-gradient(50% 60% at 55% 105%, #7fd3cb, rgb(171 228 221 / 0.6) 50%, rgb(208 240 234 / 0)),
+    radial-gradient(45% 70% at 0% 0%, #9ce1de, rgb(190 234 230 / 0.7) 50%, rgb(221 243 239 / 0)),
+    radial-gradient(55% 90% at 100% 35%, #e0eea0, rgb(232 243 194 / 0.75) 50%, rgb(240 247 222 / 0)),
+    #ecf7f1;
+}
+
+/* Desktop: the Figma 1440×1015 composition, scaled to fit smaller laptops. */
+@media (min-width: 1024px) {
+  .root {
+    --s: 0.71;
+  }
+  .stage {
+    height: calc(1015px * var(--s));
+  }
+  .comp {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1440px;
+    height: 1015px;
+    padding: 0;
+    margin-left: -720px;
+    transform: scale(var(--s));
+    transform-origin: 50% 0;
+  }
+  .text {
+    position: absolute;
+    top: 301px;
+    left: 361px;
+    width: 718px;
+    padding: 0;
+  }
+  .text h2 {
+    font-size: 54px;
+  }
+}
+@media (min-width: 1280px) {
+  .root {
+    --s: 0.85;
+  }
+}
+@media (min-width: 1440px) {
+  .root {
+    --s: 1;
+  }
+}
+/* Scroll-linked version: 1100px of extra scroll while the stage sticks. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  :global(html.js) .root {
+    height: calc(1015px * var(--s) + 1100px);
+  }
+  .root [data-m] {
+    will-change: transform;
+  }
+}
+
+/* Hover: collage pieces lift (scale, separate from the scroll-linked transform), photos zoom, rows nudge. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .items > [data-m] {
+    transition:
+      scale 0.5s cubic-bezier(0.34, 1.45, 0.64, 1),
+      box-shadow 0.4s ease-out;
+  }
+  .items > [data-m]:hover {
+    scale: 1.04;
+    z-index: 5;
+    box-shadow: 0 28px 56px -18px rgb(30 40 80 / 0.3);
+  }
+  .items > [data-m] img {
+    transition: scale 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .items > [data-m]:hover img {
+    scale: 1.06;
+  }
+  .items li {
+    transition:
+      background-color 0.25s ease-out,
+      translate 0.35s cubic-bezier(0.34, 1.45, 0.64, 1);
+  }
+  .items li:hover {
+    translate: 2px 0;
+  }
+}

@@ -1,0 +1,264 @@
+/*
+ * "How it works" (see HowItWorks.tsx / HowItWorksJobs.tsx).
+ * State classes set by HowItWorksJobs: .pinned (sticky track), .ready (JS runs – start states apply),
+ * .paused (section off-screen or tab hidden – loops stop), and per job .active / .on.
+ */
+
+.hiw {
+  /* Framer's 650ms spring (opacity) for the job cross-fade */
+  --hiw-ease: linear(0 0%, 0.012 1.5625%, 0.0428 3.125%, 0.0863 4.6875%, 0.1377 6.25%, 0.1937 7.8125%, 0.2515 9.375%, 0.3094 10.9375%, 0.3661 12.5%, 0.4205 14.0625%, 0.4721 15.625%, 0.5206 17.1875%, 0.5658 18.75%, 0.6077 20.3125%, 0.6462 21.875%, 0.6814 23.4375%, 0.7136 25%, 0.7428 26.5625%, 0.7694 28.125%, 0.7934 29.6875%, 0.815 31.25%, 0.8346 32.8125%, 0.8521 34.375%, 0.8679 35.9375%, 0.8821 37.5%, 0.8948 39.0625%, 0.9062 40.625%, 0.9163 42.1875%, 0.9254 43.75%, 0.9336 45.3125%, 0.9408 46.875%, 0.9473 48.4375%, 0.9531 50%, 0.9582 51.5625%, 0.9628 53.125%, 0.9669 54.6875%, 0.9706 56.25%, 0.9738 57.8125%, 0.9767 59.375%, 0.9793 60.9375%, 0.9816 62.5%, 0.9836 64.0625%, 0.9854 65.625%, 0.987 67.1875%, 0.9885 68.75%, 0.9898 70.3125%, 0.9909 71.875%, 0.9919 73.4375%, 0.9928 75%, 0.9936 76.5625%, 0.9943 78.125%, 0.9949 79.6875%, 0.9955 81.25%, 0.996 82.8125%, 0.9964 84.375%, 0.9968 85.9375%, 0.9972 87.5%, 0.9975 89.0625%, 0.9978 90.625%, 0.998 92.1875%, 0.9982 93.75%, 1 95.3125%, 1 96.875%, 1 98.4375%, 1 100%);
+}
+
+/* ---------- Mockup canvas (828×520) scaled to the column width (--s set by ScaledCanvas) */
+.scale {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 828 / 520;
+  overflow: hidden; /* before JS the canvas stays 828px wide – never let it widen the page */
+  border-radius: var(--radius-card);
+}
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 828px;
+  height: 520px;
+  transform: scale(var(--s, 1));
+  transform-origin: 0 0;
+}
+
+/* ---------- Stacked layout (phones, tablets, no JS) */
+.jobs {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+.detail {
+  margin-top: 1.75rem;
+  max-width: 36rem;
+}
+.tabs,
+.sharedBg,
+.spacer {
+  display: none;
+}
+
+/* ---------- Pinned layout: the job card sticks while the 1500px spacer scrolls by */
+.pinned .spacer {
+  display: block;
+  height: 1500px;
+}
+.pinned .sticky {
+  position: sticky;
+  top: 72px;
+}
+.pinned .jobs {
+  display: grid;
+}
+.pinned .job {
+  grid-area: 1 / 1;
+  transition: visibility 0s linear 0.65s;
+}
+.pinned .job:not(.active) {
+  visibility: hidden;
+}
+.pinned .job.active {
+  visibility: visible;
+  transition-delay: 0s;
+}
+.pinned .detail {
+  transition: opacity 0.2s ease;
+}
+.pinned .job:not(.active) .detail {
+  opacity: 0;
+}
+.pinned .art {
+  transition: opacity 0.65s var(--hiw-ease);
+}
+.pinned .job:not(.active) .art {
+  opacity: 0;
+}
+
+/* Sliding indicator of the active tab (position set by JobTabs) */
+.ind {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: var(--ind-h, 44px);
+  background: var(--color-ink);
+  transform: translateY(var(--ind-y, 0));
+  transition:
+    transform 0.55s cubic-bezier(0.34, 1.3, 0.64, 1),
+    height 0.55s cubic-bezier(0.34, 1.3, 0.64, 1);
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .pinned .sticky {
+    top: 40px;
+    height: 600px;
+    padding-top: 80px;
+    display: grid;
+    grid-template-columns: minmax(0, 404fr) minmax(0, 828fr);
+    column-gap: 48px;
+  }
+  .pinned .tabs {
+    display: flex;
+    grid-area: 1 / 1;
+    align-self: start;
+    z-index: 1;
+  }
+  .pinned .sharedBg {
+    display: block;
+    grid-area: 1 / 2;
+  }
+  .pinned .jobs {
+    grid-area: 1 / 1 / 2 / 3;
+    grid-template-columns: subgrid;
+  }
+  .pinned .job {
+    grid-area: 1 / 1 / 2 / 3;
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+  .pinned .art {
+    grid-area: 1 / 2;
+    transition: none;
+  }
+  .pinned .job:not(.active) .art {
+    opacity: 1;
+  }
+  .pinned .detail {
+    grid-area: 1 / 1;
+    margin-top: 228px;
+    max-width: 360px;
+  }
+  .pinned .ownBg {
+    display: none;
+  }
+  /* Desktop: the shared wash stays, only the mockup content cross-fades */
+  .pinned .job .canvas > :not(.ownBg) {
+    transition:
+      opacity 0.65s var(--hiw-ease),
+      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .pinned .job:not(.active) .canvas > :not(.ownBg) {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiw :is(.art, .detail, .canvas > *, .ind) {
+    transition: none !important;
+  }
+}
+
+/* ---------- Hover: mockup cards and nodes lift, calendar slots light up (hover devices only) */
+@media (hover: hover) {
+  .stage [data-a="s"]:hover {
+    translate: 0 -3px;
+    filter: drop-shadow(0 10px 14px rgb(12 26 47 / 0.1));
+  }
+  .stage .slot {
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      scale 0.2s ease;
+  }
+  .stage .slot:not(.slotBooked):hover {
+    scale: 1.06;
+    background-color: #dfebfd;
+    color: #2457d6;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---------- Mockup entrance (children with data-a, staggered by --i) */
+  .stage [data-a] {
+    --d: calc(0.12s + var(--i, 0) * 0.08s);
+    transition:
+      opacity 0.5s ease var(--d),
+      transform 0.6s cubic-bezier(0.34, 1.3, 0.64, 1) var(--d),
+      translate 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.35s ease;
+  }
+  .ready .job:not(.on) .stage [data-a="s"] {
+    transform: scale(0.9);
+  }
+  .ready .job:not(.on) .stage [data-a="x"] {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  .ready .job:not(.on) .stage [data-a="p"] {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  /* ---------- Job title + text replay every time the job turns on (SplitText trigger="load") */
+  .ready .job:not(.on) .detail :global(.split-c) {
+    animation: none;
+    opacity: 0.001;
+    transform: scale(0.1);
+  }
+  .ready .job:not(.on) .detail :global(.split-w) {
+    animation: none;
+    opacity: 0.001;
+    filter: blur(8px);
+    transform: translateY(12px);
+  }
+
+  /* ---------- Small loops while a job is on screen */
+  .job.on .bar {
+    animation: hiw-wave 1.2s ease-in-out infinite;
+    animation-delay: calc(var(--b) * -0.17s);
+  }
+  .job.on .dot {
+    animation: hiw-pulse 2s ease-in-out infinite;
+  }
+  .job.on .flow {
+    animation: hiw-flow 1s linear infinite;
+  }
+  .job.on .status {
+    animation: hiw-status 4.5s ease-in-out infinite;
+    animation-delay: calc(var(--b) * 1.5s);
+  }
+  .paused :is(.bar, .dot, .flow, .status) {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes hiw-wave {
+  0%,
+  100% {
+    transform: scaleY(0.45);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+@keyframes hiw-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+@keyframes hiw-flow {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+@keyframes hiw-status {
+  0%,
+  20%,
+  100% {
+    transform: none;
+  }
+  8% {
+    transform: scale(1.08);
+  }
+}

@@ -1,0 +1,31 @@
+/* Photos rise in (data-reveal) and settle from a slight zoom; hover zooms gently. */
+.photo img {
+  transform: scale(var(--z, 1));
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :global(html.js) .photo:not([data-revealed]) img {
+    --z: 1.08;
+  }
+  .photo[data-revealed] img {
+    transition-duration: 1.4s;
+    transition-delay: var(--delay, 0s);
+  }
+  @media (hover: hover) {
+    .photo:hover img {
+      --z: 1.03;
+      transition-duration: 0.7s;
+      transition-delay: 0s;
+    }
+  }
+}
+/* Figma crops the wide photo tighter (image 1106×829 placed at -143,-25 in an 820×460 frame). */
+@media (min-width: 1024px) {
+  .wide {
+    inset: -5.4% auto auto -17.4%;
+    width: 134.9%;
+    height: auto;
+    max-width: none;
+    aspect-ratio: 1106 / 829;
+  }
+}

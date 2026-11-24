@@ -1,0 +1,191 @@
+/*
+ * Home hero (see Hero.tsx). Tailwind covers the layout; this file holds what it can't express
+ * well: the flow-diagram scale steps, the split overlay with drifting glows, the pointer light
+ * and parallax, and the waveform in the heading.
+ */
+
+/* Scale of the 1248×390 flow diagram (and of the text column above it). */
+.card {
+  --flow-s: 0.5;
+}
+@media (min-width: 900px) {
+  .card {
+    --flow-s: 0.6;
+  }
+}
+@media (min-width: 1024px) {
+  .card {
+    --flow-s: 0.66;
+  }
+}
+@media (min-width: 1152px) {
+  .card {
+    --flow-s: 0.76;
+  }
+}
+@media (min-width: 1280px) {
+  .card {
+    --flow-s: 0.85;
+  }
+}
+@media (min-width: 1440px) {
+  .card {
+    --flow-s: 1;
+  }
+}
+
+.photo {
+  /* Figma image adjustments: exposure −0.25, contrast +0.15, saturation −0.6 */
+  filter: brightness(0.8) contrast(1.15) saturate(0.4);
+}
+
+/* The overlay is split into its five gradient layers (same order = same picture), so the glows can drift. */
+.layer {
+  position: absolute;
+  inset: 0;
+}
+/* Glow layers are 200% of the overlay so neither the gradients nor the drift ever reach an edge. */
+.glow {
+  inset: -50%;
+}
+.shadeV {
+  background: linear-gradient(180deg, rgb(12 26 47 / 0.55), rgb(12 26 47 / 0.35) 50%, rgb(5 16 30 / 0.6));
+}
+.shadeH {
+  background: linear-gradient(90deg, rgb(5 16 30 / 0.55), rgb(5 16 30 / 0.2) 40%, rgb(5 16 30 / 0) 65%);
+}
+.glowBlue {
+  background: radial-gradient(22.5% 30% at 71% 31%, rgb(44 103 246 / 0.55), rgb(44 103 246 / 0.2) 50%, rgb(44 103 246 / 0));
+}
+.glowViolet {
+  background: radial-gradient(20% 25% at 64% 72.5%, rgb(118 93 246 / 0.45), rgb(118 93 246 / 0.15) 50%, rgb(118 93 246 / 0));
+}
+.glowTeal {
+  background: radial-gradient(17.5% 22.5% at 42.5% 75%, rgb(87 191 179 / 0.35), rgb(87 191 179 / 0.1) 55%, rgb(87 191 179 / 0));
+}
+
+/* Soft light that follows the pointer (desktop, set by HeroCard.tsx). */
+.spot {
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgb(100 160 248 / 0.2), rgb(110 221 197 / 0.06) 45%, transparent 70%);
+  transition: opacity 0.8s ease-out;
+}
+
+/* Phones: no forced break, balanced lines. */
+.title {
+  text-wrap: balance;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Glows drift and breathe slowly, starting from the Figma position. */
+  .glow {
+    transform-origin: var(--o);
+    will-change: transform, opacity;
+  }
+  .glowBlue {
+    --o: 71% 31%;
+    animation:
+      home-hero-drift-blue 16s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate,
+      home-hero-breathe 6s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  }
+  .glowViolet {
+    --o: 64% 72.5%;
+    animation:
+      home-hero-drift-violet 19s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate,
+      home-hero-breathe 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  }
+  .glowTeal {
+    --o: 42.5% 75%;
+    animation:
+      home-hero-drift-teal 14s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate,
+      home-hero-breathe 5.5s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  }
+
+  /* Pointer parallax: HeroCard.tsx sets --px / --py (−1…1). */
+  .photo {
+    translate: calc(var(--px, 0) * -14px) calc(var(--py, 0) * -10px);
+    transition: scale 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .glow,
+  .card [data-hero-flow] {
+    translate: calc(var(--px, 0) * var(--pd, 0px)) calc(var(--py, 0) * var(--pd, 0px));
+  }
+  .glow {
+    --pd: 22px;
+  }
+  .card [data-hero-flow] {
+    --pd: 6px;
+  }
+  .card[data-pointer] .photo {
+    scale: 1.05;
+  }
+  .card[data-pointer] .spot {
+    opacity: 1;
+  }
+}
+
+@keyframes home-hero-drift-blue {
+  to {
+    transform: translate(-3%, 3.5%) scale(1.18);
+  }
+}
+@keyframes home-hero-drift-violet {
+  to {
+    transform: translate(-4.5%, -3%) scale(1.22);
+  }
+}
+@keyframes home-hero-drift-teal {
+  to {
+    transform: translate(5%, -2.5%) scale(1.15);
+  }
+}
+@keyframes home-hero-breathe {
+  to {
+    opacity: 0.6;
+  }
+}
+
+/* Waveform between "Patient calls" and "handled" (hidden on phones, like Framer). */
+.wave {
+  display: none;
+}
+@media (min-width: 768px) {
+  .wave {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    width: 112px;
+    height: 28px;
+    margin: 0 0.06em 0 0.35em;
+    vertical-align: 0.12em;
+    scale: var(--wave-s, 1);
+  }
+}
+@media (min-width: 768px) and (max-width: 1279px) {
+  .wave {
+    --wave-s: 0.8;
+    margin-inline: -0.1em -0.25em;
+  }
+}
+.wave > span {
+  width: 3px;
+  height: var(--h);
+  flex: none;
+  border-radius: 2px;
+  background: var(--c);
+  box-shadow: 0 0 12px rgb(100 160 248 / 0.6);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wave > span {
+    animation: home-hero-bar var(--t) ease-in-out calc(var(--i) * -0.23s) infinite alternate;
+  }
+}
+@keyframes home-hero-bar {
+  from {
+    transform: scaleY(0.35);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}

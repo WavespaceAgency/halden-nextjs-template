@@ -1,0 +1,39 @@
+/* Share buttons nudge up on hover; the copy button swaps its arrow for a drawn check. */
+@media (hover: hover) {
+  .button:hover {
+    translate: 0 -2px;
+  }
+}
+.arrow,
+.check {
+  transition:
+    opacity 0.2s ease,
+    scale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.check {
+  opacity: 0;
+  scale: 0.4;
+}
+.check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.4s ease 0.1s;
+}
+.button[data-copied] .arrow {
+  opacity: 0;
+  scale: 0.4;
+}
+.button[data-copied] .check {
+  opacity: 1;
+  scale: 1;
+}
+.button[data-copied] .check path {
+  stroke-dashoffset: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .arrow,
+  .check,
+  .check path {
+    transition: none;
+  }
+}

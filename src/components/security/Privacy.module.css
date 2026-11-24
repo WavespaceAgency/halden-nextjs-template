@@ -1,0 +1,161 @@
+/* Privacy section (see Privacy.tsx and PrivacyTabs.tsx). */
+
+.section {
+  background: linear-gradient(180deg, #6650aa 0%, #4b50bb 50%, #2c4ebd 100%);
+}
+
+/* Tabs */
+.tab {
+  border-color: rgb(252 251 248 / 0.52);
+  color: var(--sky);
+  transition:
+    color 0.3s,
+    border-color 0.3s;
+}
+.tab:hover,
+.tab[aria-selected="true"] {
+  color: var(--canvas);
+}
+
+/* Active tab indicator: one bar that slides between the tabs. --i is the selected index;
+   tabs are 44px (36px at lg) tall with a 2px gap, so no measuring is needed. */
+.indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 44px;
+  background: var(--canvas);
+  transform: translateY(calc(var(--i, 0) * 46px));
+  transition: transform 0.55s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+@media (min-width: 1024px) {
+  .indicator {
+    height: 36px;
+    transform: translateY(calc(var(--i, 0) * 38px));
+  }
+}
+
+/* Panels and cards: the active one fades up 8px. All of them share one grid cell, so the
+   height never jumps; hidden ones are invisible to screen readers and keyboard too.
+   Framer: the old step fades out in 0.2s, the new one fades in over 0.45s after 0.08s. */
+.step {
+  transition:
+    opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.2s;
+}
+.step:not([data-active]) {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+.step[data-active] {
+  transition-duration: 0.45s, 0.45s, 0s;
+  transition-delay: 0.08s, 0.08s, 0s;
+}
+
+/* Card contents (title, number, rows, statuses) fade in one after another – on first view
+   and on every tab switch (Framer delays, set per element as --dl / --dur). */
+@media (prefers-reduced-motion: no-preference) {
+  :global(html.js) .stage:not([data-seen]) .cardAnim {
+    opacity: 0;
+  }
+  .stage[data-seen] .step[data-active] .cardAnim {
+    animation: card-in var(--dur) cubic-bezier(0.22, 1, 0.36, 1) var(--dl) both;
+  }
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.row {
+  transition:
+    background-color 0.25s ease,
+    translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .row:hover {
+    background-color: var(--sky-tint);
+    translate: 2px 0;
+  }
+}
+
+/* Illustration: drawn at 600×380 and scaled down on small screens. */
+.art {
+  --s: 0.5;
+  height: calc(380px * var(--s));
+}
+@media (min-width: 375px) {
+  .art {
+    --s: 0.58;
+  }
+}
+@media (min-width: 640px) {
+  .art {
+    --s: 0.85;
+  }
+}
+@media (min-width: 1024px) {
+  .art {
+    --s: 1;
+  }
+}
+
+/* One glass blade of the fan, rotated by --r around its bottom centre. */
+.blade {
+  position: absolute;
+  top: 10px;
+  left: 205px;
+  width: 152px;
+  height: 264px;
+  border: 1px solid var(--sky);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.06), rgb(200 222 251 / 0.28));
+  box-shadow: -2px 0 6px 0 rgb(19 44 52 / 0.05);
+  transform-origin: 50% 100%;
+  transform: rotate(var(--r));
+}
+/* Glow layer of each blade (lit up near the pointer via --near). */
+.blade::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid #fff;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.22), rgb(200 222 251 / 0.4));
+  opacity: var(--near, 0);
+}
+
+.stem {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.06), rgb(200 222 251 / 0.28));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The fan unfolds from the centre when it scrolls into view, then leans a little
+     towards the pointer and lifts the blades closest to it (PrivacyTabs.tsx). */
+  .blade {
+    transform: rotate(calc(var(--r) * var(--spread, 1) + var(--tilt, 0deg))) translateY(calc(var(--near, 0) * -8px));
+    transition:
+      transform 1.3s cubic-bezier(0.34, 1.25, 0.64, 1) var(--bd),
+      opacity 0.6s ease-out var(--bd);
+  }
+  :global(html.js) .stage:not([data-seen]) .blade {
+    --spread: 0;
+    opacity: 0;
+  }
+  .stage[data-live] .blade {
+    transition: transform 0.25s linear;
+  }
+  .stem {
+    transform-origin: 50% 100%;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  :global(html.js) .stage:not([data-seen]) .stem {
+    transform: scaleY(0);
+  }
+}

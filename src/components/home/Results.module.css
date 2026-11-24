@@ -1,0 +1,31 @@
+/* "Results" band (see Results.tsx). */
+.root {
+  background: linear-gradient(180deg, #2c4ebd, #414fb9 45%, #5850ae 75%, #7457a3);
+}
+
+/* Hover: the portrait lifts and glows, stat cells light up. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .photo {
+    transition:
+      translate 0.5s cubic-bezier(0.34, 1.45, 0.64, 1),
+      box-shadow 0.4s ease-out;
+  }
+  .root figure:hover .photo {
+    translate: 0 -6px;
+    box-shadow:
+      0 24px 48px -12px rgb(10 14 60 / 0.45),
+      0 0 0 1px rgb(255 255 255 / 0.25);
+  }
+  .stat {
+    transition: background-color 0.3s ease-out;
+  }
+  .stat > dd {
+    transition: translate 0.45s cubic-bezier(0.34, 1.45, 0.64, 1);
+  }
+  .stat:hover {
+    background-color: rgb(255 255 255 / 0.06);
+  }
+  .stat:hover > dd {
+    translate: 0 -3px;
+  }
+}

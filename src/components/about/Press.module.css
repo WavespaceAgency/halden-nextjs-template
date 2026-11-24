@@ -1,0 +1,57 @@
+/* Hover: the card lifts, the photo zooms and the title turns blue (also on keyboard focus). */
+.card {
+  transition: translate 0.5s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+.img {
+  transition: scale 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.title {
+  transition: color 0.3s ease;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card:hover {
+    translate: 0 -4px;
+  }
+  .card:hover .img {
+    scale: 1.04;
+  }
+}
+@media (hover: hover) {
+  .card:hover .title {
+    color: var(--brand);
+  }
+}
+.card:focus-within .title {
+  color: var(--brand);
+}
+
+/* Page change: the old cards fade out, the new ones rise in one after another. */
+@media (prefers-reduced-motion: no-preference) {
+  .page[data-enter] > li {
+    animation: press-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--n) * 0.08s);
+  }
+  .page[data-leave] {
+    opacity: 0;
+    translate: 0 -8px;
+    transition:
+      opacity 0.2s ease,
+      translate 0.2s ease;
+  }
+}
+@keyframes press-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* Page buttons need JavaScript – without it only the first page is shown. */
+:global(html:not(.js)) .pager {
+  display: none;
+}
+/* The blue marker slides to the current page number (40px buttons, 8px apart). */
+.dot {
+  translate: calc(var(--p) * 48px) 0;
+  transition: translate 0.55s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
