@@ -3,7 +3,9 @@ import { LogoMark } from "@/components/ui/LogoMark";
 import { siteConfig, type NavLink } from "@/config/site";
 import { externalProps, isExternal } from "@/lib/utils";
 
-const linkClass = "flex w-fit min-h-11 items-center text-[17px] leading-[22px] text-ink-2 transition-colors hover:text-brand md:min-h-0";
+/** 44px tall on phones; on wider screens the 22px line keeps the design spacing and an invisible ::after makes the tap area 34px. */
+const linkClass =
+  "relative flex w-fit min-h-11 items-center text-[17px] leading-[22px] text-ink-2 transition-colors hover:text-brand md:min-h-0 md:after:absolute md:after:-inset-x-1 md:after:-inset-y-1.5 md:after:content-['']";
 const smallLink = "inline-flex min-h-11 items-center text-sm font-medium text-ink-2 transition-colors hover:text-brand";
 
 function FooterLink({ link, className }: { link: NavLink; className: string }) {

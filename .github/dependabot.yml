@@ -5,6 +5,10 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # Major versions can need code changes – upgrade those by hand.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       next-react:
         patterns: ["next", "@next/*", "eslint-config-next", "react", "react-dom", "@types/react", "@types/react-dom"]
